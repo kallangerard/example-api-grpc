@@ -16,7 +16,7 @@ RUN if [ "${NODE_VERSION}" != "none" ]; then su vscode -c "umask 0002 && . /usr/
 RUN pip3 --disable-pip-version-check --no-cache-dir install \
   poetry \
   && rm -rf /tmp/pip-tmp
-RUN /home/vscode/.local/bin/poetry config virtualenvs.in-project true
+# RUN /home/vscode/.local/bin/poetry config virtualenvs.in-project true
 
 
 # [Optional] Uncomment this section to install additional OS packages.
