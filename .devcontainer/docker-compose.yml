@@ -1,8 +1,8 @@
 services:
   devcontainer:
     build:
-      context: ..
-      dockerfile: .devcontainer/Dockerfile
+      context: .devcontainer
+      dockerfile: Dockerfile
       args:
         # Update 'VARIANT' to pick a version of Python: 3, 3.10, 3.9, 3.8, 3.7, 3.6
         # Append -bullseye or -buster to pin to an OS version.
@@ -11,20 +11,20 @@ services:
         # Optional Node.js version to install
         NODE_VERSION: "lts/*"
     volumes:
-      - ..:/workspace:delegated
+      - .:/workspace:delegated
     command: sleep infinity
     # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
-    network_mode: service:db
+    network_mode: service:database
 
-  db:
+  database:
     image: postgres:12
-    restart: unless-stopped
     volumes:
       - postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
       POSTGRES_PASSWORD: postgres
+    restart: unless-stopped
 
   node:
     image: node:16
@@ -34,7 +34,6 @@ services:
     command: ${COMPOSE_COMMAND:-bash}
   node_dev:
     extends:
-      file: docker-compose.yml
       service: node
     ports:
       - "3000:3000"
@@ -42,12 +41,10 @@ services:
 
   python:
     build:
-      context: .
-      dockerfile: api.dev.Dockerfile
-    user: app
+      dockerfile: Dockerfile.python-dev
     volumes:
-      - ./workspaces/example-api-grpc:/app
-      - ./Makefile:/opt/app/Makefile:ro
+      - ${PWD}:${PWD}:delegated
+    working_dir: ${PWD}
     command: ${COMPOSE_COMMAND:-bash}
 
 volumes:

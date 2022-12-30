@@ -41,13 +41,13 @@ async def get_model(model_name: ModelName):
         case ModelName.lenet:
             return {"model_name": model_name, "message": "Have some residuals"}
 
-fake_items_db = [{"item_name": "Foo"}, {
-    "item_name": "Bar"}, {"item_name": "Baz"}]
+
+fake_items_db = [{"item_name": "Foo"}, {"item_name": "Bar"}, {"item_name": "Baz"}]
 
 
 @app.get("/items/")
 async def read_items(skip: int = 0, limit: int = 10):
-    return fake_items_db[skip: skip + limit]
+    return fake_items_db[skip : skip + limit]
 
 
 @app.get("/items/{item_id}")

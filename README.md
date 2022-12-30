@@ -5,5 +5,5 @@ pip install "fastapi[all]"
 ```
 
 ```shell
-uvicorn main:app --reload
+uvicorn escrow-service.main:app --reload
 ```

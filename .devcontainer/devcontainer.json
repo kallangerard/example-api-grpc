@@ -1,6 +1,6 @@
 {
   "name": "Python 3 Postgres",
-  "dockerComposeFile": ["docker-compose.yml"],
+  "dockerComposeFile": ["../docker-compose.yml"],
   "service": "devcontainer",
   "workspaceFolder": "/workspaces",
 
@@ -18,20 +18,14 @@
 
   // Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
   "remoteUser": "vscode",
-  "features": {
-    "docker-in-docker": "20.10",
-    "terraform": "0.11.15",
-    "git": "os-provided",
-    "node": "16"
-  },
-
+  "features": {},
   // Configure tool-specific properties.
   "customizations": {
     // Configure properties specific to VS Code.
     "vscode": {
       // Set *default* container specific settings.json values on container create.
       "settings": {
-        "python.defaultInterpreterPath": "/workspaces/example-api-grpc/escrow-service/.venv/bin/python",
+        "python.defaultInterpreterPath": "/workspaces/example-api-grpc/escrow-service-openapi/.venv/bin/python",
         "python.linting.enabled": true,
         "python.linting.pylintEnabled": true,
         "python.formatting.autopep8Path": "/usr/local/py-utils/bin/autopep8",

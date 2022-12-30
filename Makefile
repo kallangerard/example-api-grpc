@@ -18,7 +18,7 @@ depsFrontend:
 	$(COMPOSE_RUN_NODE) install
 
 depsApi:
-	docker-compose build python && $(COMPOSE_RUN_PYTHON) poetry install
+	docker-compose build python
 
 upgradeDepsFrontend:
 	$(COMPOSE_RUN_NODE) upgrade
@@ -36,8 +36,16 @@ build:
 _build:
 	yarn run build
 
+devApi:
+	$(COMPOSE_RUN_PYTHON) make _devApi
 _devApi:
-	yarn run vitepress serve docs --port 5173
+	uvicorn escrow-service.main:app --reload
+
+testApi:
+	$(COMPOSE_RUN_PYTHON) make _testApi
+_testApi:
+	pytest
 
 pruneDocker:
 	docker-compose down --remove-orphans
+
