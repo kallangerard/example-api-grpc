@@ -1,1 +1,38 @@
-.devcontainer/docker-compose.yml
+services:
+  # devcontainer:
+  #   build:
+  #     context: .devcontainer
+  #     dockerfile: Dockerfile
+  #     args:
+  #       # Update 'VARIANT' to pick a version of Python: 3, 3.10, 3.9, 3.8, 3.7, 3.6
+  #       # Append -bullseye or -buster to pin to an OS version.
+  #       # Use -bullseye variants on local arm64/Apple Silicon.
+  #       VARIANT: 3-bullseye
+  #       # Optional Node.js version to install
+  #       NODE_VERSION: "lts/*"
+
+  #   volumes:
+  #     - .:/workspace:delegated
+  #   command: sleep infinity
+  #   # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
+
+  database:
+    image: postgres:12
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
+    restart: unless-stopped
+  python:
+    build:
+      dockerfile: Dockerfile.python-dev
+    volumes:
+      - ${PWD}:${PWD}:delegated
+    working_dir: ${PWD}
+    command: ${COMPOSE_COMMAND:-bash}
+
+volumes:
+  workspaces:
+  postgres-data:
