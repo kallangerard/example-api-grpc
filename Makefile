@@ -1,50 +1,41 @@
+YARN_VERSION = 3.3.1
 COMPOSE_RUN_NODE = docker-compose run --rm node
 COMPOSE_UP_NODE = docker-compose up -d node
 COMPOSE_UP_NODE_DEV = docker-compose up node_dev
-COMPOSE_RUN_PYTHON = docker-compose run --rm python
+COMPOSE_RUN_DEV = docker-compose run --rm dev --build
 COMPOSE_UP_PYTHON = docker-compose up -d python
+PYTHON_RUN = poetry run
 
 all:
-	ENVFILE=env.example $(MAKE) ciTest
+	$(MAKE) ciTest
 
 ciTest: pruneDocker deps build serve test prune
 
 ciDeploy: pruneDocker deps build serve test deploy prune
 
-envfile:
-	cp -f $(ENVFILE) .env
+deps: _depsNode _depsPython
 
-depsFrontend:
-	$(COMPOSE_RUN_NODE) install
+_depsNode:
+	corepack prepare yarn@$(YARN_VERSION) --activate
+	yarn node-packages/* install
 
-depsApi:
-	docker-compose build python
+_depsPython:
+	poetry install
 
-upgradeDepsFrontend:
-	$(COMPOSE_RUN_NODE) upgrade
+devFrontend: deps
+	make _devFrontend
+_devFrontend:
+	yarn node-packages/frontend dev
 
-shell:
-	$(COMPOSE_RUN_NODE) bash
-
-dev:
-	COMPOSE_COMMAND="make _dev" $(COMPOSE_UP_NODE_DEV)
-_dev:
-	yarn run dev
-
-build:
-	$(COMPOSE_RUN_NODE) make _build
-_build:
-	yarn run build
-
-devApi:
-	$(COMPOSE_RUN_PYTHON) make _devApi
+devApi: deps
+	make _devApi
 _devApi:
-	uvicorn escrow-service.main:app --reload
+	$(PYTHON_RUN) uvicorn escrow-service.main:app --reload
 
-testApi:
-	$(COMPOSE_RUN_PYTHON) make _testApi
+testApi: depsApi
+	make _testApi
 _testApi:
-	pytest
+	$(PYTHON_RUN) pytest
 
 pruneDocker:
 	docker-compose down --remove-orphans

@@ -38,3 +38,5 @@ next-env.d.ts
 .venv
 .pytest_cache
 __pycache__
+dist/example_api-0.1.0-py3-none-any.whl
+dist/example_api-0.1.0.tar.gz

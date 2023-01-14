@@ -1,0 +1,11 @@
+{
+  "name": "example-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "workspaces": [
+    "node-packages/frontend"
+  ],
+  "repository": "https://github.com/kallangerard/example-api.git",
+  "author": "Kallan Gerard <kallan.gerard@mechanicalrock.io>",
+  "license": "MIT"
+}

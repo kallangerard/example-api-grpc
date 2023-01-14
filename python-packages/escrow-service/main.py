@@ -10,11 +10,6 @@ async def root():
     return {"message": "Hello World"}
 
 
-# @app.get("/items/{item_id}")
-# async def read_item(item_id: int):
-#     return {"item_id": item_id}
-
-
 @app.get("/users/me")
 async def read_user_me():
     return {"user_id": "the current user"}
@@ -43,20 +38,14 @@ async def get_model(model_name: ModelName):
 
 
 fake_items_db = [{"item_name": "Foo"}, {"item_name": "Bar"}, {"item_name": "Baz"}]
+items_with_id = [{"id": index, **item} for index, item in enumerate(fake_items_db)]
 
 
 @app.get("/items/")
 async def read_items(skip: int = 0, limit: int = 10):
-    return fake_items_db[skip : skip + limit]
+    return items_with_id[skip : skip + limit]
 
 
 @app.get("/items/{item_id}")
-async def read_item(item_id: str, q: str | None = None, short: bool = False):
-    item = {"item_id": item_id}
-    if q:
-        item.update({"q": q})
-    if not short:
-        item.update(
-            {"description": "This is an amazing item that has a long description"}
-        )
-    return item
+async def read_item(item_id: int):
+    return next(x for x in items_with_id if x.get("id") == item_id)

@@ -1,20 +1,21 @@
 [tool.poetry]
-name = "wardship"
+name = "example-api"
 version = "0.1.0"
 description = ""
 authors = ["Kallan Gerard <36556982+kallangerard@users.noreply.github.com>"]
+packages = [{include = "python-packages/escrow-service"}]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
 fastapi = {extras = ["all"], version = "^0.85.1"}
 requests = "^2.28.1"
-pytest = "^7.1.3"
 python-multipart = "^0.0.5"
 pydantic = "^1.10.3"
 
 [tool.poetry.group.dev.dependencies]
 pylint = "^2.15.9"
+pytest = "^7.1.3"
 black = {version = "^23.1a1", allow-prereleases = true}
 
 [build-system]
