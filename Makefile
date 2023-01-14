@@ -30,7 +30,7 @@ _devFrontend:
 devApi: deps
 	make _devApi
 _devApi:
-	$(PYTHON_RUN) uvicorn escrow-service.main:app --reload
+	$(PYTHON_RUN) uvicorn python-packages.escrow-service.main:app --reload
 
 testApi: depsApi
 	make _testApi
